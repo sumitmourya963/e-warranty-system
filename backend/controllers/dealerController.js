@@ -13,7 +13,8 @@ exports.getAllDealer = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.newDealer = catchAsyncErrors(async (req, res, next) => {
-  const { name, gst, email, phone, address, companyId, location } = req.body;
+  const { name, gst, email, phone, address, location } = req.body;
+  console.log(name);
   if (!name || !gst || !email || !phone || !address || !location) {
     return res
       .status(400)
@@ -24,6 +25,7 @@ exports.newDealer = catchAsyncErrors(async (req, res, next) => {
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
   let password = "";
   let uniqueId = "";
+  let companyId = "659e16e5540246b6e4bc85be";
 
   for (let i = 0; i < 8; i++) {
     const randomIndex1 = Math.floor(Math.random() * charset.length);
@@ -31,6 +33,9 @@ exports.newDealer = catchAsyncErrors(async (req, res, next) => {
     password += charset.charAt(randomIndex1);
     uniqueId += charset.charAt(randomIndex2);
   }
+
+  console.log("password: ");
+  console.log(password);
 
   const dealer = await Dealer.create({
     name,

@@ -7,6 +7,7 @@ const {
   getProduct,
   createProduct,
   addItem,
+  serialNumProduct,
 } = require("../controllers/productController.js");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -19,4 +20,5 @@ router.route("/delete-product/:id").delete(deleteProduct);
 router.route("/product/:id").get(getProduct);
 router.route("/new-product").post(createProduct);
 router.route("/add-item/:id").put(addItem);
+router.route("/add-qr/:id").put(serialNumProduct);
 module.exports = router;

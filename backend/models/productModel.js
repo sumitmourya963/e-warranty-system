@@ -21,6 +21,18 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please Enter Your Warranty Periods in months"],
   },
+  itemImages: [
+    {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   data: [
     {
       serialNo: {

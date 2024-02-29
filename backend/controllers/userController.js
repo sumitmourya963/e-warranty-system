@@ -1,6 +1,7 @@
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
+const Dealers = require("../models/dealerModel");
 const sendToken = require("../utils/jwtToken");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
@@ -14,7 +15,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   // });
 
   const { name, email, password, gst, phone } = req.body;
-
+  console.log("user logged in");
   const user = await User.create({
     name,
     email,
@@ -32,26 +33,27 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
-  const { gst, password } = req.body;
-
-  // checking if user has given password and email both
+  const { gst, password, role } = req.body;
 
   if (!gst || !password) {
     return next(new ErrorHander("Please Enter GST & Password", 400));
   }
-
-  const user = await User.findOne({ gst }).select("+password");
+  var user;
+  if (role == "dealer") {
+    user = await Dealers.findOne({ gst }).select("+password");
+  } else {
+    user = await User.findOne({ gst }).select("+password");
+  }
 
   if (!user) {
     return next(new ErrorHander("Invalid GST or Password", 401));
   }
 
   const isPasswordMatched = await user.comparePassword(password);
-
   if (!isPasswordMatched) {
     return next(new ErrorHander("Invalid GST or password", 401));
   }
-  console.log(user);
+  console.log("dealer3");
   sendToken(user, 200, res);
 });
 
